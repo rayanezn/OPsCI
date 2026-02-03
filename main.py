@@ -11,7 +11,7 @@ def hello():
     return {"message": "Hello World"}
 
 @app.get("/movies")
-def get_movies(limit: int = Query(None, ge=1)): # ge1 : pour s'assurer que limit>=1
+def get_movies(limit: int = Query(None, ge=1)): # ge1 : pour s'assurer que limit >=1
     try:
         with open(DATA_PATH, "r", encoding="utf-8") as f:
             movies = json.load(f)
@@ -19,5 +19,5 @@ def get_movies(limit: int = Query(None, ge=1)): # ge1 : pour s'assurer que limit
         return {"error": "movies.json introuvable"}
     if limit is None or limit > len(movies):
         return movies
-    return movies[:limit]
+    return movies[:limit] 
 
