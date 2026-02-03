@@ -326,6 +326,31 @@ YAML (YAML Ain’t Markup Language)	Format lisible par l’humain, souvent utili
 
 
 
+## 4.3.2 : 
+
+### Qu’est-ce que CORS ?
+
+CORS = Cross-Origin Resource Sharing (partage de ressources entre origines).
+
+Les navigateurs web imposent une sécurité dite “Same-Origin Policy” :
+Un site web ne peut pas faire de requête HTTP vers un domaine différent de celui d’où il est servi, pour éviter des attaques comme le vol de données.
+
+Exemple : ton front tourne sur http://localhost:5173 et ton back sur http://127.0.0.1:8000. Même si c’est ton PC, ce sont considérés comme différentes origines, donc le navigateur bloque la requête par défaut.
+
+### Pourquoi ça bloque ?
+
+Quand le front fait une requête vers le back sur une origine différente, le navigateur envoie une requête préliminaire (OPTIONS) pour vérifier si le serveur autorise cette origine.
+
+Si le serveur ne répond pas avec l’en-tête Access-Control-Allow-Origin correct, la requête réelle est bloquée par le navigateur.
+
+Ce n’est pas une erreur du back-end, mais une protection du navigateur.
+
+### Comment résoudre le problème (configuration serveur)
+
+Avec FastAPI, on utilise le CORS middleware pour déclarer explicitement quelles origines sont autorisées à accéder à l’API.
+
+
+
 
 
 
