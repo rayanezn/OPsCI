@@ -1,51 +1,38 @@
-const movies = [
-  {
-    title: "Inception",
-    director: "Christopher Nolan",
-    description: "Un thriller de science-fiction sur les r&ecirc;ves et la manipulation de l'esprit.",
-    image: "images/inception.jpg"
-  },
-  {
-    title: "Interstellar",
-    director: "Christopher Nolan",
-    description: "Un voyage spatial pour sauver l'humanit&eacute; face &agrave; une Terre en crise.",
-    image: "images/interstellar.jpg"
-  },
-  {
-    title: "The Matrix",
-    director: "Lana Wachowski, Lilly Wachowski",
-    description: "Un hacker d&eacute;couvre la v&eacute;rit&eacute; sur la r&eacute;alit&eacute; et rejoint une r&eacute;bellion.",
-    image: "images/matrix.jpeg"
-  },
-  {
-    title: "Parasite",
-    director: "Bong Joon-ho",
-    description: "Une satire sociale o&ugrave; une famille s'infiltre progressivement chez une autre.",
-    image: "images/parasite.jpg"
-  },
-  {
-    title: "Spirited Away",
-    director: "Hayao Miyazaki",
-    description: "Une aventure fantastique dans un monde d'esprits o&ugrave; une jeune fille cherche &agrave; sauver ses parents.",
-    image: "images/spiritedaway.jpg"
-  }
-];
+async function loadMovies(limit = 5) {
+  const res = await fetch(`http://127.0.0.1:8000/movies?limit=${limit}`);
+  const movies = await res.json();
+  return movies;
+}
 
-const container = document.getElementById("movies");
+const API_BASE = "http://127.0.0.1:8000";
 
-/**
- * G&eacute;n&egrave;re les cartes de films dans la page.
- */
-movies.forEach(movie => {
-  const card = document.createElement("article");
-  card.className = "card";
-  card.innerHTML = `
-    <img src="${movie.image}" alt="${movie.title}">
-    <div class="card-content">
+
+async function displayMovies() {
+  const movies = await loadMovies(5);
+  const container = document.getElementById("movies");
+
+  container.innerHTML = "";
+  
+  movies.forEach(movie => {
+    const card = document.createElement("div");
+    card.className = "movie-card";
+  
+    const image = movie.image_url
+      ? `<img src="${API_BASE + movie.image_url}" alt="${movie.title}">`
+      : "";
+  
+    card.innerHTML = `
+      ${image}
       <h2>${movie.title}</h2>
-      <p class="meta"><strong>R&eacute;alisateur :</strong> ${movie.director}</p>
-      <p class="desc">${movie.description}</p>
-    </div>
-  `;
-  container.appendChild(card);
-});
+      <p><strong>Année :</strong> ${movie.year}</p>
+      <p><strong>Réalisateur :</strong> ${movie.director}</p>
+      <p><strong>Genre :</strong> ${movie.genre}</p>
+    `;
+  
+    container.appendChild(card);
+  });
+  
+}
+
+displayMovies();
+
